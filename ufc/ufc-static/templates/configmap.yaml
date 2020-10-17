@@ -6,6 +6,5 @@ metadata:
   labels:
     {{- include "ufc-static.labels" . | nindent 4 }}
 data:
-  Caddyfile: |
-    {{ .Values.customCaddyfile.content | nindent 4 }}
+  Caddyfile: |{{ .Values.customCaddyfile.content | nindent 4 }}
 {{- end }}
