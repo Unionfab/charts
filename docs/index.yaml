@@ -3,12 +3,12 @@ entries:
   ufc-static:
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-10-16T16:52:43.938703+08:00"
+    created: "2020-10-17T15:48:04.110708+08:00"
     description: A Helm chart for staic site using CaddyServer
-    digest: 33b11cb823a1fb9878d37f59e0f1fbbcb6c8ebb6315df0fe9e51d985a498fd42
+    digest: bbd515517918fc26a885b907a3943d5c59150e779a8bc5cc7f4306315328e603
     name: ufc-static
     type: application
     urls:
     - https://unionfab.github.io/charts/ufc-static-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-16T16:52:43.938034+08:00"
+generated: "2020-10-17T15:48:04.110041+08:00"
