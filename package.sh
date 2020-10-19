@@ -12,13 +12,15 @@ for ((i = 0; i < $#; i++)); do
 done
 
 cd ..
-for i in $(ls "${TMP_DIR}"); do
+for i in $(ls docs); do
+  echo "Backing up ${i}"
   mv "docs/${i}" "${TMP_DIR}/"
 done
 
 git checkout gh-pages
 mkdir -p docs
 for i in $(ls "${TMP_DIR}"); do
+  echo "Updating ${i}"
   mv "${TMP_DIR}/${i}" ./docs/
 done
 
