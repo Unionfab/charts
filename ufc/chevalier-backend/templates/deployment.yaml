@@ -49,12 +49,12 @@ spec:
             - name: yourbiz-local-file-storage
               mountPath: {{ .Values.biz.localFileStore.savePath }}
             {{- end }}
-          startupProbe:
-            httpGet:
-              path: /swagger-resources
-              port: http
-            failureThreshold: 30
-            periodSeconds: 10
+          # startupProbe:
+          #   httpGet:
+          #     path: /swagger-resources
+          #     port: http
+          #   failureThreshold: 30
+          #   periodSeconds: 10
       volumes:
         {{- if .Values.biz.configMap.enabled }}
         - name: app-conf
