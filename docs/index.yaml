@@ -1,9 +1,20 @@
 apiVersion: v1
 entries:
+  chevalier-backend:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2020-10-19T09:33:47.625854+08:00"
+    description: A Helm chart for Kubernetes
+    digest: 2b03e79e8aa3949a990f861b0d8216367ba88ac70f686eff8c9a97acf274ca8b
+    name: chevalier-backend
+    type: application
+    urls:
+    - https://unionfab.github.io/charts/chevalier-backend-0.1.0.tgz
+    version: 0.1.0
   ufc-static:
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-10-17T15:48:04.110708+08:00"
+    created: "2020-10-19T09:33:47.626321+08:00"
     description: A Helm chart for staic site using CaddyServer
     digest: bbd515517918fc26a885b907a3943d5c59150e779a8bc5cc7f4306315328e603
     name: ufc-static
@@ -11,4 +22,4 @@ entries:
     urls:
     - https://unionfab.github.io/charts/ufc-static-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-17T15:48:04.110041+08:00"
+generated: "2020-10-19T09:33:47.625243+08:00"
