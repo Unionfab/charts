@@ -3,7 +3,7 @@ entries:
   chevalier-backend:
   - apiVersion: v2
     appVersion: latest
-    created: "2020-10-19T13:21:04.231763+08:00"
+    created: "2020-10-20T09:11:02.65776+08:00"
     description: A Helm chart for Kubernetes
     digest: e32d3e18f4b492ebc526f68f81fe62ff7fa6519a724b8bf7e6d0867ecf04433c
     name: chevalier-backend
@@ -11,10 +11,41 @@ entries:
     urls:
     - https://unionfab.github.io/charts/chevalier-backend-0.1.0.tgz
     version: 0.1.0
+  ufc-be:
+  - apiVersion: v2
+    appVersion: 0.2.14-dev
+    created: "2020-10-20T09:11:02.661665+08:00"
+    dependencies:
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 1.6.2
+    - condition: rabbitmq.enabled
+      name: rabbitmq
+      repository: https://kubernetes-charts.storage.googleapis.com/
+      version: 6.16.1
+    description: A Helm chart for Kubernetes
+    digest: 933e57c344de14cadcfba6220512f21d08572c79a67c449c7ecf5afce05196b0
+    name: ufc-be
+    type: application
+    urls:
+    - https://unionfab.github.io/charts/ufc-be-0.2.14-dev.tgz
+    version: 0.2.14-dev
+  ufc-gateway:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2020-10-20T09:11:02.662257+08:00"
+    description: A Helm chart for Kubernetes
+    digest: 516d049516230e8fffe8291609a1fd19b9e6ee01e213f148868287d96f3333d7
+    name: ufc-gateway
+    type: application
+    urls:
+    - https://unionfab.github.io/charts/ufc-gateway-0.1.0.tgz
+    version: 0.1.0
   ufc-static:
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-10-19T13:21:04.232499+08:00"
+    created: "2020-10-20T09:11:02.662671+08:00"
     description: A Helm chart for staic site using CaddyServer
     digest: bbd515517918fc26a885b907a3943d5c59150e779a8bc5cc7f4306315328e603
     name: ufc-static
@@ -22,4 +53,4 @@ entries:
     urls:
     - https://unionfab.github.io/charts/ufc-static-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-19T13:21:04.230786+08:00"
+generated: "2020-10-20T09:11:02.657139+08:00"
