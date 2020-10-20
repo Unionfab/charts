@@ -1,0 +1,121 @@
+{{- $fullName := include "ufc-gateway.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "ufc-gateway.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "ufc-gateway.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "ufc-gateway.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "ufc-gateway.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        {{- if .Values.arms.enabled }}
+        - name: setup-arms
+          image: busybox
+          volumeMounts:
+            - name: arms
+              mountPath: /opt/arms
+          command: ['sh', '-c',
+                    'wget http://arms-apm-hangzhou.oss-cn-hangzhou.aliyuncs.com/ArmsAgent.zip -O /opt/armsAgent.zip
+                       && unzip /opt/armsAgent.zip -d /opt/arms
+                       && cat /opt/arms/ArmsAgent/version
+                       && echo JAVA_TOOL_OPTIONS="\"-javaagent:$(ls /opt/arms/ArmsAgent/arms-bootstrap-*.jar) -Darms.licenseKey=${ARMS_LICENSE_KEY} -Darms.appName=${ARMS_APP_NAME}\"" > /opt/arms/arms.env
+                       ']
+          env:
+            - name: ARMS_APP_NAME
+              value: {{ .Values.arms.appName }}
+            - name: ARMS_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $fullName }}
+                  key: arms-license-key
+        {{- end }}
+
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ['sh', '-c',
+          '[ -f /opt/arms/arms.env ] && . /opt/arms/arms.env;
+           java -Duser.timezone={{ .Values.serverTimezone }} -jar ufc-gateway.jar --spring.config.location=/etc/ufc/config.yaml']
+          ports:
+            - name: http
+              # see secret.yaml server.port
+              containerPort: {{ .Values.serverPort }}
+              protocol: TCP
+            - name: eplat-cmd
+              containerPort: 5555
+              hostPort: 5555
+              protocol: TCP
+            - name: eplat-file
+              containerPort: 6666
+              hostPort: 6666
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: app-conf
+              mountPath: "/etc/ufc"
+              readOnly: true
+            - name: file-storage
+              mountPath: {{ .Values.filestore.storeRoot }}
+            {{- if .Values.arms.enabled }}
+            - name: arms
+              mountPath: /opt/arms
+            {{- end }}
+          env:
+            - name: MQTT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $fullName }}
+                  key: mqtt-password
+            - name: GATEWAY_ACCESS_KEY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $fullName }}
+                  key: gateway-access-key-secret
+            - name: EPLATCONTROL_CONFIG_FILE
+              value: /etc/ufc/eplatControl.json
+      volumes:
+        - name: app-conf
+          configMap:
+            name: {{ $fullName }}
+        - name: file-storage
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default $fullName }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if .Values.arms.enabled }}
+        - name: arms
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

@@ -1,0 +1,66 @@
+{{- $fullName := include "ufc-gateway.fullname" . -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "ufc-gateway.labels" . | nindent 4 }}
+data:
+  config.yaml: |-
+    server:
+      port: {{ .Values.serverPort }}
+
+    spring:
+      flyway:
+        enabled: false
+      servlet:
+        multipart:
+          max-file-size: {{ .Values.filestore.maxFileSize }}
+          max-request-size: {{ .Values.filestore.maxFileSize }}
+
+    features:
+      swagger: {{ .Values.features.swagger }}
+      verification: {{ .Values.features.verification }}
+
+    filestore:
+      storeRoot: {{ .Values.filestore.storeRoot }}
+      autoCleanUpBeforeDays: {{ .Values.filestore.autoCleanUpBeforeDays }}
+      storeDb:
+        name: {{ .Values.filestore.storeDb.name }}
+        recreateOnStart: {{ .Values.filestore.storeDb.recreateOnStart }}
+        initOnStart: {{ .Values.filestore.storeDb.initOnStart }}
+      transfer:
+        concurrentDownloads: 10
+        concurrentUploads: 10
+
+    gateway:
+      code: {{ .Values.gateway.code }}
+      accessKeyId: {{ .Values.gateway.accessKeyId }}
+      accessKeySecret: ${GATEWAY_ACCESS_KEY_SECRET}
+      applyRemoteConfiguration: {{ .Values.gateway.applyRemoteConfiguration }}
+      reporting:
+        interval: {{ .Values.reporting.interval }}
+      persistence:
+        type: file
+      connection:
+        enabled: true
+        host: {{ .Values.mqtt.brokerHost }}
+        port: {{ .Values.mqtt.brokerPort }}
+        username: {{ .Values.mqtt.username }}
+        password: ${MQTT_PASSWORD}
+        retryInterval: {{ .Values.mqtt.retryInterval }}
+        maxInFlight: {{ .Values.mqtt.maxInFlight }}
+      extensions:
+        {{- if .Values.extensions.eplatcontrol.enabled }}
+        - id: {{ .Values.extensions.eplatcontrol.id }}
+          type: "EPLATCONTROL"
+          localConfiguration: |
+            {{ .Values.extensions.eplatcontrol.config | nindent 12 }}
+        {{- end }}
+        {{- if .Values.extensions.sidecar.enabled }}
+        - id: {{ .Values.extensions.sidecar.id }}
+          type: "SIDE_CAR"
+          localConfiguration: |
+            {{ .Values.extensions.sidecar.config | nindent 12 }}
+        {{- end }}
+  
