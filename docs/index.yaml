@@ -3,9 +3,9 @@ entries:
   chevalier-backend:
   - apiVersion: v2
     appVersion: latest
-    created: "2020-10-20T09:11:02.65776+08:00"
+    created: "2020-10-21T12:28:40.936543+08:00"
     description: A Helm chart for Kubernetes
-    digest: e32d3e18f4b492ebc526f68f81fe62ff7fa6519a724b8bf7e6d0867ecf04433c
+    digest: 0ff139ec719aab01a62e9bd3e8953730b4def16d89f42fed657791d7cbb5ed48
     name: chevalier-backend
     type: application
     urls:
@@ -14,7 +14,7 @@ entries:
   ufc-be:
   - apiVersion: v2
     appVersion: 0.2.14-dev
-    created: "2020-10-20T09:11:02.661665+08:00"
+    created: "2020-10-21T12:28:40.94064+08:00"
     dependencies:
     - condition: mysql.enabled
       name: mysql
@@ -25,7 +25,7 @@ entries:
       repository: https://kubernetes-charts.storage.googleapis.com/
       version: 6.16.1
     description: A Helm chart for Kubernetes
-    digest: 933e57c344de14cadcfba6220512f21d08572c79a67c449c7ecf5afce05196b0
+    digest: 1e2bc325f9aa853009af2502bf4149b2f6b2a3270abb271bf9b47facbad329e6
     name: ufc-be
     type: application
     urls:
@@ -34,9 +34,9 @@ entries:
   ufc-gateway:
   - apiVersion: v2
     appVersion: 0.1.0
-    created: "2020-10-20T09:11:02.662257+08:00"
+    created: "2020-10-21T12:28:40.941273+08:00"
     description: A Helm chart for Kubernetes
-    digest: 516d049516230e8fffe8291609a1fd19b9e6ee01e213f148868287d96f3333d7
+    digest: f5e44797a2bc6d7a9915b91f219759e92c1289f7fe6f8ea6f8d9ae396034812a
     name: ufc-gateway
     type: application
     urls:
@@ -45,12 +45,12 @@ entries:
   ufc-static:
   - apiVersion: v2
     appVersion: 1.0.3
-    created: "2020-10-20T09:11:02.662671+08:00"
+    created: "2020-10-21T12:28:40.941703+08:00"
     description: A Helm chart for staic site using CaddyServer
-    digest: bbd515517918fc26a885b907a3943d5c59150e779a8bc5cc7f4306315328e603
+    digest: 39a86c6352a44bfc2429e5e3f38cf3511f6f4751756cafdc071f2978cf924827
     name: ufc-static
     type: application
     urls:
     - https://unionfab.github.io/charts/ufc-static-0.1.0.tgz
     version: 0.1.0
-generated: "2020-10-20T09:11:02.657139+08:00"
+generated: "2020-10-21T12:28:40.935952+08:00"
